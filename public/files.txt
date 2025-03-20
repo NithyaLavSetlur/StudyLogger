@@ -1,0 +1,13 @@
+database.sqlite
+queries.sql
+app.js
+index.html
+manifest.json
+styles.css
+server.js
+generate_data.sh
+setup.sh
+.gitattributes
+LICENSE
+package-lock.json
+package.json

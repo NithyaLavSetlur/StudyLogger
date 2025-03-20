@@ -1,0 +1,10 @@
+database
+workingDocuments
+backend
+documentation
+node_modules
+public
+frontend
+assets
+PWA-catalogue
+scripts
