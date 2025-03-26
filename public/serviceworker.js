@@ -2,10 +2,14 @@ const CACHE_NAME = 'study-logger-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/style.css',
+  '/styles.css',
   '/app.js',
   '/images/logo.png',
-  '/images/favicon.png'
+  '/images/favicon.png',
+  '/input.html',
+  '/logs.html',
+  '/settings.html',
+  '/statistics.html',
 ];
 
 self.addEventListener('install', event => {
