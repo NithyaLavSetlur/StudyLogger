@@ -3,25 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Database Table</title>
+  <title>StudyLogger</title>
 </head>
 <body>
-  <h1>Users List</h1>
+  <h1>StudyLogger</h1>
   <table border="1">
     <thead>
       <tr>
-        <th>carID</th>
-        <th>make</th>
-        <th>model</th>
+        <th>Session ID</th>
+        <th>Date</th>
+        <th>Subject</th>
+        <th>Start time</th>
+        <th>End time</th>
+        <th>Duration</th>
       </tr>
     </thead>
     <tbody>
-      <!-- Loop through the users and display each row -->
-      <% users.forEach(cars => { %>
+      <!-- Loop through the sessions and display each row -->
+      <% sessions.forEach(sessions => { %>
         <tr>
-          <td><%= cars.carID %></td>
-          <td><%= cars.make %></td>
-          <td><%= cars.model %></td>
+            <td><%= sessions.session_id %></td>
+            <td><%= sessions.session_date %></td>
+            <td><%= sessions.session_subject %></td>
+            <td><%= sessions.session_starttime %></td>  
+            <td><%= sessions.session_endtime %></td>
+            <td><%= sessions.session_duration %></td>
         </tr>
       <% }); %>
     </tbody>
