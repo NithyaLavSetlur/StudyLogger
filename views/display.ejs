@@ -3,32 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sessions Display</title>
-    <link rel="stylesheet" href="public\styles.css">
+    <title>StudyLogger - Catalog of Sessions</title>
+    <link rel="stylesheet" href="/public/styles.css">
 </head>
 <body>
-    <h2>Study Sessions Display</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Subject</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Duration</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% sessions.forEach(sessions => { %>
-                <tr>
-                    <td><%= sessions.session_date %></td>
-                    <td><%= sessions.session_subject %></td>
-                    <td><%= sessions.session_starttime %></td>
-                    <td><%= sessions.session_endtime %></td>
-                    <td><%= sessions.session_duration %></td>
-                </tr>
-            <% }); %>
-        </tbody>
-    </table>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="menu-icon">☰</div>
+            <div class="logo">LOGO</div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <h1>StudyLogger - Catalog of Sessions</h1>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <label for="filter">Filters:</label>
+                <select id="filter">
+                    <option>Year</option>
+                    <option>Month</option>
+                    <option>Week</option>
+                    <option>Day</option>
+                    <option>Subject/Topic</option>
+                    <option>Duration (hrs)</option>
+                    <option>Streaks</option>
+                    <option>Max/Min</option>
+                </select>
+            </div>
+
+            <!-- Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Subject</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Duration</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% sessions.forEach(sessions => { %>
+                        <tr>
+                            <td><%= sessions.session_date %></td>
+                            <td><%= sessions.session_subject %></td>
+                            <td><%= sessions.session_starttime %></td>
+                            <td><%= sessions.session_endtime %></td>
+                            <td><%= sessions.session_duration %></td>
+                            <td><button class="details-btn">Details</button></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </main>
+    </div>
 </body>
 </html>
