@@ -1,10 +1,8 @@
-database
-workingDocuments
-backend
-documentation
+.database
+.vscode
+.workingDocuments
 node_modules
 public
-frontend
-assets
-PWA-catalogue
-scripts
+static
+routes
+views
