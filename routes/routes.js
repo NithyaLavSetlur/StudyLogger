@@ -63,7 +63,7 @@ router.post('/submit-session', (req, res) => {
 
 // Route to user dashboard
 router.get('/dashboard', (req, res) => {
-    res.send('USER DASHBOARD');
+    res.render('dashboard');
 });
 
 // Route for the session catalog page
@@ -91,7 +91,14 @@ router.get('/dashboard/display', (req, res) => {
 
 // Route for the AI chatbot page
 router.get('/dashboard/statistics', (req, res) => {
-    res.send('STATISTICS PAGE');
+  db.all('SELECT * FROM sessions', (err, results) => {
+    if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ error: err.message });
+    }
+    console.log(results); // Check if sessions data is retrieved correctly
+    res.render('statistics', { sessions: results });
+  });
 });
 
 // Export the router to be used in server.js

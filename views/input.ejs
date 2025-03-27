@@ -1,129 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyLogger - Input Logs</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #16a085;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo-text:hover {
+            color: var(--accent);
+        }
+
+        /* Navigation Styles */
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .nav-menu li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: var(--transition);
+            display: block;
+        }
+
+        .nav-menu li a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            border-radius: 5px;
+            z-index: 1;
+            padding: 10px 0;
+        }
+
+        .dropdown-content a {
+            padding: 10px 20px;
+            color: var(--text);
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown-content a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Form Styles */
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        select, input[type="number"], input[type="time"], input[type="text"] {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 25px 0;
+        }
+
+        /* Calculator Styles */
+        .calculator-container {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: var(--light);
+            border-radius: 8px;
+        }
+
+        .calculator-display {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: right;
+            font-size: 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calc-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .calc-btn.operator {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .calc-btn.operator:hover {
+            background-color: #138a72;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Duration Display */
+        .duration-display {
+            padding: 10px;
+            background-color: var(--light);
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .nav-menu {
+                margin-top: 15px;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-menu li {
+                margin: 5px 0;
+                width: 100%;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                width: 100%;
+            }
+
+            .time-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h1>StudyLogger - Input Logs: Form</h1>
-    
-    <form action="/submit-session" method="POST">
-        <div class="form-group">
-            <label for="day">Day:</label>
-            <select id="day" name="day" required></select>
+    <!-- Header with Logo and Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="public/static/study.png" alt="StudyLogger Logo" class="logo-img">
+                <a href="http://localhost:8000/home" class="logo-text">StudyLogger</a>
+            </div>
+            
+            <nav class="nav">
+                <ul class="nav-menu">
+                    <li><a href="http://localhost:8000/home">Home</a></li>
+                    <li><a href="http://localhost:8000/input">Input Logs</a></li>
+                    <li class="dropdown">
+                        <a href="http://localhost:8000/dashboard">User Dashboard</a>
+                        <div class="dropdown-content">
+                            <a href="http://localhost:8000/dashboard/sessions"><i class="fas fa-list"></i> Catalog of Sessions</a>
+                            <a href="http://localhost:8000/dashboard/display"><i class="fas fa-book"></i> Full Study Log</a>
+                            <a href="http://localhost:8000/dashboard/statistics"><i class="fas fa-chart-bar"></i> Statistics</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        <div class="form-group">
-            <label for="month">Month:</label>
-            <select id="month" name="month" required>
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="year">Year:</label>
-            <input type="number" id="year" name="year" value="2025" required>
-        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <h1>StudyLogger - Input Logs: Form</h1>
         
-        <div class="form-group">
-            <label for="subject">Subject Studied:</label>
-            <select id="subject" name="subject" required>
-                <option value="" disabled selected>Select a subject</option>
-                <option value="Maths Extension 1">Maths Extension 1</option>
-                <option value="Maths Extension 2">Maths Extension 2</option>
-                <option value="English">English</option>
-                <option value="Software Engineering">Software Engineering</option>
-                <option value="Physics">Physics</option>
-            </select>
-        </div>
-        
-        <div class="time-inputs">
+        <form action="/submit-session" method="POST">
             <div class="form-group">
-                <label for="startTime">Start Time:</label>
-                <input type="time" id="startTime" name="startTime" required>
+                <label for="day">Day:</label>
+                <select id="day" name="day" required></select>
+            </div>
+            <div class="form-group">
+                <label for="month">Month:</label>
+                <select id="month" name="month" required>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="number" id="year" name="year" value="2025" required>
             </div>
             
             <div class="form-group">
-                <label for="endTime">End Time:</label>
-                <input type="time" id="endTime" name="endTime" required>
+                <label for="subject">Subject Studied:</label>
+                <select id="subject" name="subject" required>
+                    <option value="" disabled selected>Select a subject</option>
+                    <option value="Maths Extension 1">Maths Extension 1</option>
+                    <option value="Maths Extension 2">Maths Extension 2</option>
+                    <option value="English">English</option>
+                    <option value="Software Engineering">Software Engineering</option>
+                    <option value="Physics">Physics</option>
+                </select>
             </div>
-        </div>
-        
-        <hr>
-        
-        <input class="duration" id="duration" name="duration" type="hidden" readonly> <!-- Hidden input for the duration -->
-        
-        <button type="submit" class="submit-btn">Submit Session</button>
-    </form>
-    
+            
+            <div class="time-inputs">
+                <div class="form-group">
+                    <label for="startTime">Start Time:</label>
+                    <input type="time" id="startTime" name="startTime" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="endTime">End Time:</label>
+                    <input type="time" id="endTime" name="endTime" required>
+                </div>
+            </div>
+            
+            <!-- Duration Display -->
+            <div class="duration-display" id="durationDisplay">Duration: 0 hours 0 minutes</div>
+            <input class="duration" id="duration" name="duration" type="hidden" readonly>
+            
+            <!-- Calculator Section -->
+            <div class="calculator-container">
+                <h3>Calculator</h3>
+                <input type="text" class="calculator-display" id="calcDisplay" readonly>
+                <div class="calculator-buttons">
+                    <button type="button" class="calc-btn" onclick="appendToCalc('7')">7</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('8')">8</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('9')">9</button>
+                    <button type="button" class="calc-btn operator" onclick="appendToCalc('+')">+</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('4')">4</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('5')">5</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('6')">6</button>
+                    <button type="button" class="calc-btn operator" onclick="appendToCalc('-')">-</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('1')">1</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('2')">2</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('3')">3</button>
+                    <button type="button" class="calc-btn operator" onclick="appendToCalc('*')">×</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('0')">0</button>
+                    <button type="button" class="calc-btn" onclick="appendToCalc('.')">.</button>
+                    <button type="button" class="calc-btn" onclick="calculate()">=</button>
+                    <button type="button" class="calc-btn operator" onclick="appendToCalc('/')">÷</button>
+                    <button type="button" class="calc-btn operator" style="grid-column: span 4;" onclick="clearCalc()">Clear</button>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <button type="submit" class="submit-btn">Submit Session</button>
+        </form>
+    </main>
+
     <script>
-    function updateDays() {
-        const month = document.getElementById("month").value;
-        const daySelect = document.getElementById("day");
+        // Your existing date and duration calculation functions
+        function updateDays() {
+            const month = document.getElementById("month").value;
+            const daySelect = document.getElementById("day");
 
-        if (!daySelect) return;
+            if (!daySelect) return;
 
-        daySelect.innerHTML = "";
+            daySelect.innerHTML = "";
 
-        let daysInMonth = 31;
-        if (month === "2") {
-            daysInMonth = 28;
-        } else if (["4", "6", "9", "11"].includes(month)) {
-            daysInMonth = 30;
+            let daysInMonth = 31;
+            if (month === "2") {
+                daysInMonth = 28;
+            } else if (["4", "6", "9", "11"].includes(month)) {
+                daysInMonth = 30;
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                let option = document.createElement("option");
+                option.value = i;
+                option.textContent = i;
+                daySelect.appendChild(option);
+            }
         }
 
-        for (let i = 1; i <= daysInMonth; i++) {
-            let option = document.createElement("option");
-            option.value = i;
-            option.textContent = i;
-            daySelect.appendChild(option);
+        function calculateDuration() {
+            const startTime = document.getElementById("startTime").value;
+            const endTime = document.getElementById("endTime").value;
+            const durationInput = document.getElementById("duration");
+            const durationDisplay = document.getElementById("durationDisplay");
+
+            if (!startTime || !endTime) {
+                durationInput.value = "0 hours 0 minutes";
+                durationDisplay.textContent = "Duration: 0 hours 0 minutes";
+                return;
+            }
+
+            const start = new Date(`1970-01-01T${startTime}`);
+            const end = new Date(`1970-01-01T${endTime}`);
+
+            if (end <= start) {
+                durationInput.value = "End time must be after start time!";
+                durationDisplay.textContent = "Duration: Invalid time range";
+                return;
+            }
+
+            const durationMs = end - start;
+            const hours = Math.floor(durationMs / (1000 * 60 * 60));
+            const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+
+            const duration = `${hours} hours ${minutes} minutes`;
+            durationInput.value = duration;
+            durationDisplay.textContent = `Duration: ${duration}`;
         }
-    }
 
-    function calculateDuration() {
-        const startTime = document.getElementById("startTime").value;
-        const endTime = document.getElementById("endTime").value;
-        const durationInput = document.getElementById("duration");
-
-        if (!startTime || !endTime) {
-            durationInput.value = 0; // No duration if times are not filled
-            return;
+        // Calculator functions
+        function appendToCalc(value) {
+            document.getElementById("calcDisplay").value += value;
         }
 
-        const start = new Date(`1970-01-01T${startTime}`);
-        const end = new Date(`1970-01-01T${endTime}`);
-
-        if (end <= start) {
-            durationInput.value = "End time must be after start time!"; // Handle invalid time inputs
-            return;
+        function clearCalc() {
+            document.getElementById("calcDisplay").value = '';
         }
 
-        const durationMs = end - start;
-        const hours = Math.floor(durationMs / (1000 * 60 * 60));
-        const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+        function calculate() {
+            try {
+                const display = document.getElementById("calcDisplay");
+                // Replace × with * for calculation
+                const expression = display.value.replace(/×/g, '*').replace(/÷/g, '/');
+                const result = eval(expression);
+                display.value = result;
+            } catch (e) {
+                document.getElementById("calcDisplay").value = 'Error';
+            }
+        }
 
-        const duration = `${hours} hours ${minutes} minutes`;
-        durationInput.value = duration; // Store the duration in the hidden input field
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("month").addEventListener("change", updateDays);
-        document.getElementById("startTime").addEventListener("input", calculateDuration);
-        document.getElementById("endTime").addEventListener("input", calculateDuration);
-        
-        updateDays(); // Populate days on page load
-    });
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("month").addEventListener("change", updateDays);
+            document.getElementById("startTime").addEventListener("input", calculateDuration);
+            document.getElementById("endTime").addEventListener("input", calculateDuration);
+            
+            updateDays(); // Populate days on page load
+        });
     </script>
 </body>
+
 </html>

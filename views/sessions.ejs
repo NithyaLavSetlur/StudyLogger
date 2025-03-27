@@ -1,39 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyLogger</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyLogger - Full Study Log</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #16a085;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo-text:hover {
+            color: var(--accent);
+        }
+
+        /* Navigation Styles */
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .nav-menu li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: var(--transition);
+            display: block;
+        }
+
+        .nav-menu li a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            border-radius: 5px;
+            z-index: 1;
+            padding: 10px 0;
+        }
+
+        .dropdown-content a {
+            padding: 10px 20px;
+            color: var(--text);
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown-content a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Spreadsheet Styles */
+        .spreadsheet-container {
+            overflow-x: auto;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+        }
+
+        .spreadsheet {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .spreadsheet th, 
+        .spreadsheet td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        .spreadsheet th {
+            background-color: var(--secondary);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .spreadsheet tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .spreadsheet tr:hover {
+            background-color: #e6f7ff;
+        }
+
+        .subject-row {
+            font-weight: bold;
+            background-color: var(--light) !important;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: #e0e0e0 !important;
+        }
+
+        .hours-row {
+            font-style: italic;
+            background-color: #f5f5f5 !important;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .nav-menu {
+                margin-top: 15px;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-menu li {
+                margin: 5px 0;
+                width: 100%;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <h1>Study Logger</h1>
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Day</th>
-        <th>Month</th>
-        <th>Year</th>
-        <th>Subject</th>
-        <th>Start Time</th>
-        <th>End Time</th>
-        <th>Duration</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Loop through the sessions and display each row -->
-      <% sessions.forEach(sessions => { %>
-        <tr>
-          <td><%= sessions.session_day %></td> 
-          <td><%= sessions.session_month %></td> 
-          <td><%= sessions.session_year %></td>
-          <td><%= sessions.session_subject %></td>
-          <td><%= sessions.session_starttime %></td>
-          <td><%= sessions.session_endtime %></td>
-          <td><%= sessions.session_duration %></td>
-        </tr>
-      <% }); %>
-    </tbody>
-  </table>
+    <!-- Header with Logo and Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="public/static/study.png" alt="StudyLogger Logo" class="logo-img">
+                <a href="http://localhost:8000/home" class="logo-text">StudyLogger</a>
+            </div>
+            
+            <nav class="nav">
+                <ul class="nav-menu">
+                    <li><a href="http://localhost:8000/home">Home</a></li>
+                    <li><a href="http://localhost:8000/input">Input Logs</a></li>
+                    <li class="dropdown">
+                        <a href="http://localhost:8000/dashboard">User Dashboard</a>
+                        <div class="dropdown-content">
+                            <a href="http://localhost:8000/dashboard/sessions"><i class="fas fa-list"></i> Catalog of Sessions</a>
+                            <a href="http://localhost:8000/dashboard/display"><i class="fas fa-book"></i> Full Study Log</a>
+                            <a href="http://localhost:8000/dashboard/statistics"><i class="fas fa-chart-bar"></i> Statistics</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <h1>StudyLogger - Weekly Study Overview</h1>
+        
+        <div class="spreadsheet-container">
+            <table class="spreadsheet">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Subject Hours:</th>
+                        <th rowspan="2">Total:</th>
+                        <th rowspan="2">Week:</th>
+                        <% 
+                        // This would be dynamically generated from your database
+                        const dates = [
+                            '03/16/25 Sunday', '03/17/25 Monday', '03/18/25 Tuesday', 
+                            '03/19/25 Wednesday', '03/20/25 Thursday', '03/21/25 Friday', 
+                            '03/22/25 Saturday'
+                        ];
+                        dates.forEach(date => { %>
+                            <th colspan="2"><%= date %></th>
+                        <% }); %>
+                    </tr>
+                    <tr>
+                        <% dates.forEach(() => { %>
+                            <th>Minutes</th>
+                            <th>Hours</th>
+                        <% }); %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Subject Rows -->
+                    <% 
+                    const subjects = [
+                        { name: 'Maths', totalHours: 106.5, totalMinutes: 6390 },
+                        { name: 'English', totalHours: 16.45, totalMinutes: 987 },
+                        { name: 'Physics', totalHours: 74.58, totalMinutes: 4475 },
+                        { name: 'Software Eng', totalHours: 30.42, totalMinutes: 1825 }
+                    ];
+                    
+                    subjects.forEach(subject => { %>
+                        <tr class="subject-row">
+                            <td><%= subject.name %></td>
+                            <td><%= subject.totalHours %></td>
+                            <td><%= subject.totalMinutes %></td>
+                            <% 
+                            // This would be dynamically generated from your database
+                            const weeklyData = [
+                                { minutes: 50, hours: 0.83 }, { minutes: 320, hours: 5.33 }, 
+                                { minutes: 200, hours: 3.33 }, { minutes: 300, hours: 5 }, 
+                                { minutes: 0, hours: 0 }, { minutes: 140, hours: 2.33 }, 
+                                { minutes: 320, hours: 5.33 }
+                            ];
+                            weeklyData.forEach(day => { %>
+                                <td><%= day.minutes %></td>
+                                <td><%= day.hours %></td>
+                            <% }); %>
+                        </tr>
+                    <% }); %>
+                    
+                    <!-- Total Row -->
+                    <tr class="total-row">
+                        <td>Total Minutes:</td>
+                        <td>227.95</td>
+                        <td>13677</td>
+                        <% 
+                        const totals = [2300, 330, 420, 590, 520, 240, 240, 320];
+                        totals.forEach(total => { %>
+                            <td colspan="2"><%= total %></td>
+                        <% }); %>
+                    </tr>
+                    
+                    <!-- Hours Row -->
+                    <tr class="hours-row">
+                        <td>Total Hours:</td>
+                        <td>38.33</td>
+                        <td></td>
+                        <% 
+                        const hours = [7, 9.83, 8.67, 4, 4, 4, 5.33];
+                        hours.forEach(hour => { %>
+                            <td colspan="2"><%= hour %></td>
+                        <% }); %>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        // This would be replaced with your actual database queries
+        // The current implementation is just for the template structure
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight current page in menu
+            const currentPage = window.location.pathname;
+            const menuLinks = document.querySelectorAll('.nav-menu a');
+            
+            menuLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = 'var(--accent)';
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>

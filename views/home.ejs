@@ -4,63 +4,436 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyLogger - Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>StudyLogger - Track Your Learning Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #16a085;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo-text:hover {
+            color: var(--accent);
+        }
+
+        /* Navigation Styles */
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .nav-menu li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: var(--transition);
+            display: block;
+        }
+
+        .nav-menu li a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            border-radius: 5px;
+            z-index: 1;
+            padding: 10px 0;
+        }
+
+        .dropdown-content a {
+            padding: 10px 20px;
+            color: var(--text);
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown-content a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
+            background-size: cover;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        h2 {
+            color: var(--secondary);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .testimonial {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-size: 4rem;
+            color: rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .testimonial p {
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 15px;
+        }
+
+        .cta {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .nav-menu {
+                margin-top: 15px;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-menu li {
+                margin: 5px 0;
+                width: 100%;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            section {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Navigation Menu -->
-    <nav class="menu">
-        <ul>
-            <li><a href="http://localhost:8000/home">Home</a></li>
-            <li><a href="http://localhost:8000/input">Input Logs</a></li>
-            <li><a href="http://localhost:8000/dashboard">User Dashboard</a></li>
-            <li><a href="http://localhost:8000/dashboard/sessions">Catalog of Sessions</a></li>
-            <li><a href="http://localhost:8000/dashboard/display">Full Study Log</a></li>
-            <li><a href="http://localhost:8000/dashboard/statistics">Statistics</a></li>
-        </ul>
-    </nav>
-
-    <!-- <div id="root"></div> -->
+    <!-- Header with Logo and Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="/public/static/study.png" alt="StudyLogger Logo" class="logo-img">
+                <a href="http://localhost:8000/home" class="logo-text">StudyLogger</a>
+            </div>
+            
+            <nav class="nav">
+                <ul class="nav-menu">
+                    <li><a href="http://localhost:8000/home">Home</a></li>
+                    <li><a href="http://localhost:8000/input">Input Logs</a></li>
+                    <li class="dropdown">
+                        <a href="http://localhost:8000/dashboard">User Dashboard</a>
+                        <div class="dropdown-content">
+                            <!-- Corrected navigation links -->
+                            <a href="http://localhost:8000/dashboard/sessions"><i class="fas fa-book"></i> Full Study Log</a>
+                            <a href="http://localhost:8000/dashboard/display"><i class="fas fa-list"></i> Catalog of Sessions</a>
+                            <a href="http://localhost:8000/dashboard/statistics"><i class="fas fa-chart-bar"></i> Statistics</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
     <!-- Main Content -->
-    <main class="content">
-        <div class="logo">
-            <!-- Add your logo image here -->
-            <img src="static/study.png" alt="StudyLogger Logo">
-            <h1>STUDYLOGGER!</h1>
+    <main class="container">
+        <div class="hero">
+            <h1>Optimize Your Study Habits</h1>
+            <p>StudyLogger helps you track, analyze, and improve your learning process with powerful analytics and intuitive logging tools.</p>
         </div>
 
-        <!-- ABOUT SECTION - Add your about content here -->
         <section id="about">
-            <h2>ABOUT STUDYLOGGER</h2>
-            <p>
-                <!-- Add your about content here -->
-                This is where you describe what StudyLogger is, its purpose, and any important information about the
-                project.
-            </p>
+            <h2>About StudyLogger</h2>
+            <p>StudyLogger is more than just a time tracker - it's your personal learning companion. Designed by students for students, our platform helps you gain insights into your study patterns, identify productive times, and optimize your learning strategy.</p>
+            <p>With over 50,000 students already improving their study habits, StudyLogger has become the go-to solution for academic success at universities worldwide.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Time Tracking</h3>
+                    <p>Precisely log your study sessions down to the minute, with automatic duration calculation and smart reminders.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-pie"></i>
+                    <h3>Advanced Analytics</h3>
+                    <p>Visualize your study patterns with interactive charts and get personalized recommendations for improvement.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-tags"></i>
+                    <h3>Category Management</h3>
+                    <p>Organize your study sessions by subject, project, or priority level for better organization and review.</p>
+                </div>
+            </div>
         </section>
 
-        <!-- USAGE SECTION - Add usage instructions here -->
         <section id="usage">
-            <h2>USAGE</h2>
-            <p>
-                <!-- Add usage instructions here -->
-                Explain how to use StudyLogger, step-by-step instructions, or any important usage notes.
-            </p>
+            <h2>How It Works</h2>
+            <p>Getting started with StudyLogger is simple and takes just minutes:</p>
+            <ol style="margin-left: 20px; margin-bottom: 20px;">
+                <li><strong>Log your sessions:</strong> Record what you study, for how long, and add relevant tags</li>
+                <li><strong>Review your dashboard:</strong> See your weekly patterns and productivity trends</li>
+                <li><strong>Analyze your data:</strong> Use our insights to optimize your study schedule</li>
+                <li><strong>Improve continuously:</strong> Set goals and track your progress over time</li>
+            </ol>
+            <p>Our mobile-friendly interface means you can log sessions anywhere, anytime - during library study sessions, group work, or even quick review periods between classes.</p>
         </section>
 
-        <!-- Add any additional sections or content here as needed -->
-    </main>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const currentPage = window.location.pathname.split('/').pop() || 'home';
-            const menuLinks = document.querySelectorAll('.menu a');
+        <section id="testimonials">
+            <h2>What Our Users Say</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <p>StudyLogger helped me identify my most productive hours and double my study efficiency. I went from B's to straight A's in one semester!</p>
+                    <div class="testimonial-author">- Sarah J., Computer Science Major</div>
+                </div>
+                <div class="testimonial">
+                    <p>As a medical student, tracking my study time was crucial. StudyLogger's analytics showed me exactly where I needed to focus more attention.</p>
+                    <div class="testimonial-author">- Michael T., Medical Student</div>
+                </div>
+                <div class="testimonial">
+                    <p>The session catalog feature saved me during finals week. Being able to review all my past notes and study logs in one place was a game-changer.</p>
+                    <div class="testimonial-author">- Emily R., Law Student</div>
+                </div>
+            </div>
+        </section>
 
+        <section class="cta">
+            <h2>Ready to Transform Your Study Habits?</h2>
+            <p>Join thousands of students who are already achieving more with less effort.</p>
+            <a href="http://localhost:8000/input" class="btn">Start Logging Now</a>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight current page in menu
+            const currentPage = window.location.pathname;
+            const menuLinks = document.querySelectorAll('.nav-menu a');
+            
             menuLinks.forEach(link => {
-                const linkPage = link.getAttribute('href').split('/').pop();
-                if (linkPage === currentPage) {
-                    link.style.color = '#0066cc';
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = 'var(--accent)';
                     link.style.fontWeight = 'bold';
                 }
             });

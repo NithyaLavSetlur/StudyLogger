@@ -1,68 +1,601 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyLogger - Catalog of Sessions</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #16a085;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            
+            /* Subject colors */
+            --maths-color: #e74c3c;
+            --english-color: #3498db;
+            --physics-color: #9b59b6;
+            --software-color: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo-text:hover {
+            color: var(--accent);
+        }
+
+        /* Navigation Styles */
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .nav-menu li a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: var(--transition);
+            display: block;
+        }
+
+        .nav-menu li a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            border-radius: 5px;
+            z-index: 1;
+            padding: 10px 0;
+        }
+
+        .dropdown-content a {
+            padding: 10px 20px;
+            color: var(--text);
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown-content a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .content {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Filter Bar */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-group label {
+            margin-right: 8px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .filter-group select {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: white;
+            min-width: 120px;
+        }
+
+        .reset-btn {
+            padding: 8px 15px;
+            background-color: var(--light);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .reset-btn:hover {
+            background-color: #ddd;
+        }
+
+        /* Session Tiles Grid */
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .session-tile {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .session-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .session-tile::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: var(--subject-color, var(--primary));
+        }
+
+        .session-subject {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .session-date {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .session-duration {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-title {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .modal-detail {
+            margin-bottom: 15px;
+        }
+
+        .modal-detail label {
+            font-weight: 600;
+            display: inline-block;
+            width: 120px;
+            color: var(--text-light);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-group select {
+                width: 100%;
+            }
+
+            .sessions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .nav-menu {
+                margin-top: 15px;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-menu li {
+                margin: 5px 0;
+                width: 100%;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="menu-icon">☰</div>
-            <div class="logo">LOGO</div>
-        </aside>
+    <!-- Header with Logo and Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="/public/static/study.png" alt="StudyLogger Logo" class="logo-img">
+                <a href="http://localhost:8000/home" class="logo-text">StudyLogger</a>
+            </div>
+            
+            <nav class="nav">
+                <ul class="nav-menu">
+                    <li><a href="http://localhost:8000/home">Home</a></li>
+                    <li><a href="http://localhost:8000/input">Input Logs</a></li>
+                    <li class="dropdown">
+                        <a href="http://localhost:8000/dashboard">User Dashboard</a>
+                        <div class="dropdown-content">
+                            <a href="http://localhost:8000/dashboard/sessions"><i class="fas fa-book"></i> Full Study Log</a>
+                            <a href="http://localhost:8000/dashboard/display"><i class="fas fa-list"></i> Catalog of Sessions</a>
+                            <a href="http://localhost:8000/dashboard/statistics"><i class="fas fa-chart-bar"></i> Statistics</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-        <!-- Main Content -->
-        <main class="content">
-            <h1>StudyLogger - Catalog of Sessions</h1>
+    <!-- Main Content -->
+    <main class="content">
+        <h1>Catalog of Sessions</h1>
 
-            <!-- Filter Bar -->
-            <div class="filter-bar">
-                <label for="filter">Filters:</label>
-                <select id="filter">
-                    <option>Year</option>
-                    <option>Month</option>
-                    <option>Week</option>
-                    <option>Day</option>
-                    <option>Subject/Topic</option>
-                    <option>Duration (hrs)</option>
-                    <option>Streaks</option>
-                    <option>Max/Min</option>
+        <!-- Filter Bar -->
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="yearFilter">Year:</label>
+                <select id="yearFilter" onchange="applyFilters()">
+                    <option value="">All Years</option>
+                    <!-- Will be populated by JavaScript -->
                 </select>
             </div>
+            
+            <div class="filter-group">
+                <label for="monthFilter">Month:</label>
+                <select id="monthFilter" onchange="applyFilters()">
+                    <option value="">All Months</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="subjectFilter">Subject:</label>
+                <select id="subjectFilter" onchange="applyFilters()">
+                    <option value="">All Subjects</option>
+                    <!-- Will be populated by JavaScript -->
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="durationFilter">Duration:</label>
+                <select id="durationFilter" onchange="applyFilters()">
+                    <option value="">Any Duration</option>
+                    <option value="short">Less than 1 hour</option>
+                    <option value="medium">1-3 hours</option>
+                    <option value="long">More than 3 hours</option>
+                </select>
+            </div>
+            
+            <button class="reset-btn" onclick="resetFilters()">Reset Filters</button>
+        </div>
 
-            <!-- Table -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>Month</th>
-                        <th>Year</th>
-                        <th>Subject</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Duration</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% sessions.forEach(sessions => { %>
-                        <tr>
-                            <td><%= sessions.session_day %></td> 
-                            <td><%= sessions.session_month %></td> 
-                            <td><%= sessions.session_year %></td>
-                            <td><%= sessions.session_subject %></td>
-                            <td><%= sessions.session_starttime %></td>
-                            <td><%= sessions.session_endtime %></td>
-                            <td><%= sessions.session_duration %></td>
-                            <td><button class="details-btn">Details</button></td>
-                        </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        </main>
+        <!-- Sessions Grid -->
+        <div class="sessions-grid" id="sessionsGrid">
+            <% sessions.forEach(session => { 
+                // Determine color based on subject
+                let subjectColor = 'var(--primary)';
+                if (session.session_subject.includes('Maths')) {
+                    subjectColor = 'var(--maths-color)';
+                } else if (session.session_subject.includes('English')) {
+                    subjectColor = 'var(--english-color)';
+                } else if (session.session_subject.includes('Physics')) {
+                    subjectColor = 'var(--physics-color)';
+                } else if (session.session_subject.includes('Software')) {
+                    subjectColor = 'var(--software-color)';
+                }
+                
+                // Format date
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+                const formattedDate = `${session.session_day} ${months[session.session_month-1]} ${session.session_year}`;
+                
+                // Extract hours from duration
+                let durationHours = 0;
+                const hoursMatch = session.session_duration.match(/(\d+)\s*hours?/);
+                if (hoursMatch) {
+                    durationHours = parseInt(hoursMatch[1]);
+                }
+                const minutesMatch = session.session_duration.match(/(\d+)\s*minutes?/);
+                if (minutesMatch) {
+                    durationHours += parseInt(minutesMatch[1]) / 60;
+                }
+            %>
+                <div class="session-tile" 
+                     onclick="showSessionDetails('<%= session.session_subject %>', '<%= session.session_duration %>', '<%= session.session_starttime %>', '<%= session.session_endtime %>', '<%= session.session_day %>', '<%= session.session_month %>', '<%= session.session_year %>')"
+                     style="--subject-color: <%= subjectColor %>"
+                     data-year="<%= session.session_year %>"
+                     data-month="<%= session.session_month %>"
+                     data-subject="<%= session.session_subject %>"
+                     data-duration="<%= durationHours %>">
+                    <div class="session-subject"><%= session.session_subject %></div>
+                    <div class="session-date"><%= formattedDate %></div>
+                    <div class="session-duration"><%= session.session_duration %></div>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+
+    <!-- Session Details Modal -->
+    <div class="modal" id="sessionModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title" id="modalSubject">Subject</h2>
+            <div class="modal-details">
+                <div class="modal-detail">
+                    <label>Date:</label>
+                    <span id="modalDate"></span>
+                </div>
+                <div class="modal-detail">
+                    <label>Start Time:</label>
+                    <span id="modalStartTime"></span>
+                </div>
+                <div class="modal-detail">
+                    <label>End Time:</label>
+                    <span id="modalEndTime"></span>
+                </div>
+                <div class="modal-detail">
+                    <label>Duration:</label>
+                    <span id="modalDuration"></span>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Initialize filters when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate year filter
+            const yearFilter = document.getElementById('yearFilter');
+            const years = new Set();
+            document.querySelectorAll('.session-tile').forEach(tile => {
+                years.add(tile.dataset.year);
+            });
+            Array.from(years).sort().forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearFilter.appendChild(option);
+            });
+            
+            // Populate subject filter
+            const subjectFilter = document.getElementById('subjectFilter');
+            const subjects = new Set();
+            document.querySelectorAll('.session-tile').forEach(tile => {
+                subjects.add(tile.dataset.subject);
+            });
+            Array.from(subjects).sort().forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectFilter.appendChild(option);
+            });
+            
+            // Highlight current page in menu
+            const currentPage = window.location.pathname;
+            const menuLinks = document.querySelectorAll('.nav-menu a');
+            
+            menuLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = 'var(--accent)';
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+
+        // Show session details in modal
+        function showSessionDetails(subject, duration, startTime, endTime, day, month, year) {
+            const modal = document.getElementById('sessionModal');
+            document.getElementById('modalSubject').textContent = subject;
+            document.getElementById('modalDate').textContent = `${day}/${month}/${year}`;
+            document.getElementById('modalStartTime').textContent = startTime;
+            document.getElementById('modalEndTime').textContent = endTime;
+            document.getElementById('modalDuration').textContent = duration;
+            modal.style.display = 'flex';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('sessionModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('sessionModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const yearFilter = document.getElementById('yearFilter').value;
+            const monthFilter = document.getElementById('monthFilter').value;
+            const subjectFilter = document.getElementById('subjectFilter').value;
+            const durationFilter = document.getElementById('durationFilter').value;
+            
+            document.querySelectorAll('.session-tile').forEach(tile => {
+                const matchesYear = !yearFilter || tile.dataset.year === yearFilter;
+                const matchesMonth = !monthFilter || tile.dataset.month === monthFilter;
+                const matchesSubject = !subjectFilter || tile.dataset.subject === subjectFilter;
+                
+                let matchesDuration = true;
+                if (durationFilter) {
+                    const duration = parseFloat(tile.dataset.duration);
+                    if (durationFilter === 'short' && duration >= 1) matchesDuration = false;
+                    if (durationFilter === 'medium' && (duration < 1 || duration > 3)) matchesDuration = false;
+                    if (durationFilter === 'long' && duration <= 3) matchesDuration = false;
+                }
+                
+                if (matchesYear && matchesMonth && matchesSubject && matchesDuration) {
+                    tile.style.display = 'block';
+                } else {
+                    tile.style.display = 'none';
+                }
+            });
+        }
+
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('yearFilter').value = '';
+            document.getElementById('monthFilter').value = '';
+            document.getElementById('subjectFilter').value = '';
+            document.getElementById('durationFilter').value = '';
+            
+            document.querySelectorAll('.session-tile').forEach(tile => {
+                tile.style.display = 'block';
+            });
+        }
+    </script>
 </body>
+
 </html>
