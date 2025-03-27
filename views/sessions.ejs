@@ -4,16 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StudyLogger</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Study Logger</h1>
   <table border="1">
     <thead>
       <tr>
-        <th>Date</th>
+        <th>Day</th>
+        <th>Month</th>
+        <th>Year</th>
         <th>Subject</th>
-        <th>Start time</th>
-        <th>End time</th>
+        <th>Start Time</th>
+        <th>End Time</th>
         <th>Duration</th>
       </tr>
     </thead>
@@ -21,11 +24,13 @@
       <!-- Loop through the sessions and display each row -->
       <% sessions.forEach(sessions => { %>
         <tr>
-            <td><%= sessions.session_date %></td>
-            <td><%= sessions.session_subject %></td>
-            <td><%= sessions.session_starttime %></td>  
-            <td><%= sessions.session_endtime %></td>
-            <td><%= sessions.session_duration %></td>
+          <td><%= sessions.session_day %></td> 
+          <td><%= sessions.session_month %></td> 
+          <td><%= sessions.session_year %></td>
+          <td><%= sessions.session_subject %></td>
+          <td><%= sessions.session_starttime %></td>
+          <td><%= sessions.session_endtime %></td>
+          <td><%= sessions.session_duration %></td>
         </tr>
       <% }); %>
     </tbody>

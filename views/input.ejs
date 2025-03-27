@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyLogger - Input Logs</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>StudyLogger - Input Logs: Form</h1>
+    
+    <form action="/submit-session" method="POST">
+        <div class="form-group">
+            <label for="date">Date of Session</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="subject">Subject Studied:</label>
+            <select id="subject" name="subject" required>
+                <option value="" disabled selected>Select a subject</option>
+                <option value="Math">Math</option>
+                <option value="Science">Science</option>
+                <option value="History">History</option>
+                <option value="Literature">Literature</option>
+                <option value="Other">Create new...</option>
+            </select>
+        </div>
+        
+        <div class="time-inputs">
+            <div class="form-group">
+                <label for="start-time">Start Time:</label>
+                <input type="time" id="start-time" name="startTime" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="end-time">End Time:</label>
+                <input type="time" id="end-time" name="endTime" required>
+            </div>
+        </div>
+        
+        <div class="calculator">+</div>
+        
+        <hr>
+        
+        <div class="duration" id="duration">Duration of Session: 0 Hours</div>
+        
+        <button type="submit" class="submit-btn">Submit Session</button>
+    </form>
+    <script src="anotherScript.js"></script>
+</body>
+</html>

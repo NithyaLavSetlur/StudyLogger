@@ -29,28 +29,8 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static('public')); // ✅ Correctly serving static files
 app.use('/', router); // mounted the router(routes.js - urls) under /
-
-// zukijourney API DRAFT CODE
-// Install the OpenAI package: npm install openai
-// import OpenAI from 'openai';
-
-// const client = new OpenAI({
-//   baseURL: 'https://api.zukijourney.com/v1',
-//   apiKey: 'zu-14cbdc74fc6e5cdcbc2336b96fda2680',
-// });
-
-// async function main() {
-//   const response = await client.chat.completions.create({
-//     model: 'caramelldansen-1', // or gpt-4o-mini, claude-3-haiku, gemini-1.5-flash, etc...
-//     messages: [{ role: 'user', content: 'Hello, AI!' }],
-//   });
-
-//   console.log(response.choices[0].message.content);
-// }
-
-// main();
-
 
 // Start server (ONLY ONE app.listen)
 const PORT = 8000;

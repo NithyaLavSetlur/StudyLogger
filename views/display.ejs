@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyLogger - Catalog of Sessions</title>
-    <link rel="stylesheet" href="/public/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -37,7 +37,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
+                        <th>Day</th>
+                        <th>Month</th>
+                        <th>Year</th>
                         <th>Subject</th>
                         <th>Start Time</th>
                         <th>End Time</th>
@@ -48,7 +50,9 @@
                 <tbody>
                     <% sessions.forEach(sessions => { %>
                         <tr>
-                            <td><%= sessions.session_date %></td>
+                            <td><%= sessions.session_day %></td> 
+                            <td><%= sessions.session_month %></td> 
+                            <td><%= sessions.session_year %></td>
                             <td><%= sessions.session_subject %></td>
                             <td><%= sessions.session_starttime %></td>
                             <td><%= sessions.session_endtime %></td>

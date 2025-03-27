@@ -17,13 +17,19 @@ const db = new sqlite3.Database(dbPath, (err) => {
 
 // Route for the home page
 router.get('/home', (req, res) => {
-  res.send('HOME PAGE');
+  res.render('home');
 });
 
 // Route to input session/logs page
-router.get('/inpulogt', (req, res) => {
-    res.send('INPUT SESSIONS PAGE');
-});
+router.get('/inputlog', (req, res) => {
+  db.all("SELECT * FROM sessions", (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.render('input', { sessions: results });
+  });
+})
 
 // Route to user dashboard
 router.get('/dashboard', (req, res) => {
@@ -54,8 +60,8 @@ router.get('/dashboard/display', (req, res) => {
 });
 
 // Route for the AI chatbot page
-router.get('/dashboard/chatbot', (req, res) => {
-    res.send('AI CHATBOT');
+router.get('/dashboard/statistics', (req, res) => {
+    res.send('STATISTICS PAGE');
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
