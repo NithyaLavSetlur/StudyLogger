@@ -90,5 +90,5 @@ VALUES
 -- Query the data from the 'extension' table
 SELECT * FROM extension;
 
--- Query the data from the 'sessions' table for 'Maths Extension 1'
-SELECT * FROM sessions WHERE session_subject LIKE 'Maths Extension 1';
+-- -- Query the data from the 'sessions' table for 'Maths Extension 1'
+-- SELECT * FROM sessions WHERE session_subject LIKE 'Maths Extension 1';

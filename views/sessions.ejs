@@ -6,11 +6,10 @@
   <title>StudyLogger</title>
 </head>
 <body>
-  <h1>StudyLogger</h1>
+  <h1>Study Logger</h1>
   <table border="1">
     <thead>
       <tr>
-        <th>Session ID</th>
         <th>Date</th>
         <th>Subject</th>
         <th>Start time</th>
@@ -22,7 +21,6 @@
       <!-- Loop through the sessions and display each row -->
       <% sessions.forEach(sessions => { %>
         <tr>
-            <td><%= sessions.session_id %></td>
             <td><%= sessions.session_date %></td>
             <td><%= sessions.session_subject %></td>
             <td><%= sessions.session_starttime %></td>  

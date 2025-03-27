@@ -13,21 +13,52 @@ const db = new sqlite3.Database(dbPath, (err) => {
   console.log("Connected to SQLite database");
 });
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Route for the home page
-router.get('/', (req, res) => {
-  res.send('Welcome to the Home Page');
+router.get('/home', (req, res) => {
+  res.send('HOME PAGE');
 });
 
-// Route for the catalog page (with sessions database view)
-router.get('/sessions', (req, res) => {
+// Route to input session/logs page
+router.get('/inpulogt', (req, res) => {
+    res.send('INPUT SESSIONS PAGE');
+});
+
+// Route to user dashboard
+router.get('/dashboard', (req, res) => {
+    res.send('USER DASHBOARD');
+});
+
+// Route for the session catalog page
+router.get('/dashboard/sessions', (req, res) => {
   db.all("SELECT * FROM sessions", (err, results) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ error: err.message });
     }
-    res.render('index', { sessions: results });
+    res.render('sessions', { sessions: results });
   });
 })
+ 
+// Route for the study log display page
+router.get('/dashboard/display', (req, res) => {
+  db.all('SELECT * FROM sessions', (err, results) => {
+    if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ error: err.message });
+    }
+    console.log(results); // Check if sessions data is retrieved correctly
+    res.render('display', { sessions: results });
+  });
+});
+
+// Route for the AI chatbot page
+router.get('/dashboard/chatbot', (req, res) => {
+    res.send('AI CHATBOT');
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // // Route with a dynamic parameter (e.g., user ID)
 // router.get('/sessions/:id', (req, res) => {

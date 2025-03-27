@@ -55,5 +55,5 @@ app.use('/', router); // mounted the router(routes.js - urls) under /
 // Start server (ONLY ONE app.listen)
 const PORT = 8000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}/sessions`);
+    console.log(`Server running on http://localhost:${PORT}/home`);
 });
