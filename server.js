@@ -4,6 +4,7 @@ const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs");
 const { router } = require(path.join(__dirname, "routes", "routes.js")); // ✅ Correctly importing only the router
 const app = express();
+const bodyParser = require('body-parser');
 
 // Set the views directory (if not using default 'views' directory)
 app.set('views', __dirname + '/views');
@@ -26,11 +27,14 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+app.use(bodyParser.urlencoded({ extended: true })); // To parse form submissions
+app.use(bodyParser.json()); // To parse JSON bodies if needed
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static('public')); // ✅ Correctly serving static files
 app.use('/', router); // mounted the router(routes.js - urls) under /
+app.use(express.urlencoded({ extended: true })); // Add this line
 
 // Start server (ONLY ONE app.listen)
 const PORT = 8000;

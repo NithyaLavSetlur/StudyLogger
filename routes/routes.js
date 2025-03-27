@@ -21,15 +21,45 @@ router.get('/home', (req, res) => {
 });
 
 // Route to input session/logs page
-router.get('/inputlog', (req, res) => {
-  db.all("SELECT * FROM sessions", (err, results) => {
+router.get('/input', (req, res) => {
+    res.render('input');
+});
+
+// Route to handle session form submission
+router.post('/submit-session', (req, res) => {
+  let { day, month, year, subject, startTime, endTime, duration } = req.body; // Use let instead of const
+
+  console.log("Session details:", req.body); // Check if form data is received correctly
+  // Ensure all required fields are provided
+  if (!day || !month || !year || !subject || !startTime || !endTime || !duration) {
+      return res.status(400).json({ error: "All fields are required." });
+  }
+
+  // Convert values to integers
+  let session_day = parseInt(day, 10); // Use let instead of const
+  let session_month = parseInt(month, 10); // Use let instead of const
+  let session_year = parseInt(year, 10); // Use let instead of const
+
+  // Calculate session duration
+  let start = new Date(`1970-01-01T${startTime}`); // Use let instead of const
+  let end = new Date(`1970-01-01T${endTime}`); // Use let instead of const
+  let durationMs = end - start; // Use let instead of const
+  let session_duration = `${Math.floor(durationMs / (1000 * 60 * 60))} hours`; // Use let instead of const
+
+  // Insert the data into the sessions table
+  const query = `INSERT INTO sessions (session_day, session_month, session_year, session_subject, session_starttime, session_endtime, session_duration) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  
+  db.run(query, [session_day, session_month, session_year, subject, startTime, endTime, session_duration], function(err) {
     if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ error: err.message });
+        console.error("Database error:", err.message);
+        return res.status(500).json({ error: err.message }); // Ensure there's a return to stop further processing
     }
-    res.render('input', { sessions: results });
-  });
-})
+ 
+    console.log("New session added with ID:", this.lastID);
+    return res.redirect('/dashboard/sessions'); // Add return to stop further execution
+   });
+});
+
 
 // Route to user dashboard
 router.get('/dashboard', (req, res) => {
@@ -64,18 +94,5 @@ router.get('/dashboard/statistics', (req, res) => {
     res.send('STATISTICS PAGE');
 });
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// // Route with a dynamic parameter (e.g., user ID)
-// router.get('/sessions/:id', (req, res) => {
-//   const userId = req.params.id;
-//   res.send(`User ID: ${userId}`);
-// });
-
-// // Post request route to handle form submissions or data
-// router.post('/submit', (req, res) => {
-//   res.send('Form submitted');
-// });
-
-// Export the router to be used in app.js
+// Export the router to be used in server.js
 module.exports = { router, db };

@@ -11,42 +11,119 @@
     
     <form action="/submit-session" method="POST">
         <div class="form-group">
-            <label for="date">Date of Session</label>
-            <input type="date" id="date" name="date" required>
+            <label for="day">Day:</label>
+            <select id="day" name="day" required></select>
+        </div>
+        <div class="form-group">
+            <label for="month">Month:</label>
+            <select id="month" name="month" required>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <input type="number" id="year" name="year" value="2025" required>
         </div>
         
         <div class="form-group">
             <label for="subject">Subject Studied:</label>
             <select id="subject" name="subject" required>
                 <option value="" disabled selected>Select a subject</option>
-                <option value="Math">Math</option>
-                <option value="Science">Science</option>
-                <option value="History">History</option>
-                <option value="Literature">Literature</option>
-                <option value="Other">Create new...</option>
+                <option value="Maths Extension 1">Maths Extension 1</option>
+                <option value="Maths Extension 2">Maths Extension 2</option>
+                <option value="English">English</option>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Physics">Physics</option>
             </select>
         </div>
         
         <div class="time-inputs">
             <div class="form-group">
-                <label for="start-time">Start Time:</label>
-                <input type="time" id="start-time" name="startTime" required>
+                <label for="startTime">Start Time:</label>
+                <input type="time" id="startTime" name="startTime" required>
             </div>
             
             <div class="form-group">
-                <label for="end-time">End Time:</label>
-                <input type="time" id="end-time" name="endTime" required>
+                <label for="endTime">End Time:</label>
+                <input type="time" id="endTime" name="endTime" required>
             </div>
         </div>
         
-        <div class="calculator">+</div>
-        
         <hr>
         
-        <div class="duration" id="duration">Duration of Session: 0 Hours</div>
+        <input class="duration" id="duration" name="duration" type="hidden" readonly> <!-- Hidden input for the duration -->
         
         <button type="submit" class="submit-btn">Submit Session</button>
     </form>
-    <script src="anotherScript.js"></script>
+    
+    <script>
+    function updateDays() {
+        const month = document.getElementById("month").value;
+        const daySelect = document.getElementById("day");
+
+        if (!daySelect) return;
+
+        daySelect.innerHTML = "";
+
+        let daysInMonth = 31;
+        if (month === "2") {
+            daysInMonth = 28;
+        } else if (["4", "6", "9", "11"].includes(month)) {
+            daysInMonth = 30;
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+            let option = document.createElement("option");
+            option.value = i;
+            option.textContent = i;
+            daySelect.appendChild(option);
+        }
+    }
+
+    function calculateDuration() {
+        const startTime = document.getElementById("startTime").value;
+        const endTime = document.getElementById("endTime").value;
+        const durationInput = document.getElementById("duration");
+
+        if (!startTime || !endTime) {
+            durationInput.value = 0; // No duration if times are not filled
+            return;
+        }
+
+        const start = new Date(`1970-01-01T${startTime}`);
+        const end = new Date(`1970-01-01T${endTime}`);
+
+        if (end <= start) {
+            durationInput.value = "End time must be after start time!"; // Handle invalid time inputs
+            return;
+        }
+
+        const durationMs = end - start;
+        const hours = Math.floor(durationMs / (1000 * 60 * 60));
+        const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        const duration = `${hours} hours ${minutes} minutes`;
+        durationInput.value = duration; // Store the duration in the hidden input field
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("month").addEventListener("change", updateDays);
+        document.getElementById("startTime").addEventListener("input", calculateDuration);
+        document.getElementById("endTime").addEventListener("input", calculateDuration);
+        
+        updateDays(); // Populate days on page load
+    });
+    </script>
 </body>
 </html>
